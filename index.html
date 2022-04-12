@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Stocks</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.min.css" />
+</head>
+
+<body>
+  <div class="container">
+    <h1>APIs Testing</h1>
+
+    <!-- This form will be where users input data about the stocks -->
+    <form id="movie-form">
+      <label for="stock-input">Search for a Stock</label>
+      <input type="text" id="stock-input" placeholder="Write a stock symbol"><br>
+
+      <!-- This button will trigger our AJAX call -->
+      <input id="find-stock" type="submit" value="Search for a Stock">
+    </form>
+
+    <!-- We'll be dumping our JSON contents in here -->
+    <div id="stock-view"></div>
+
+    <h2>Stock News</h2>
+    <div id="news-view"></div>
+   
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript">
+      // This .on("click") function will trigger the AJAX Call
+      $("#find-stock").on("click", function(event) {
+
+        // event.preventDefault() can be used to prevent an event's default behavior.
+        // Here, it prevents the submit button from trying to submit a form when clicked
+        event.preventDefault();
+
+        // Here we grab the text from the input box
+        var stockSymbol = $("#stock-input").val();
+
+        // Here we construct our URL
+        var queryURL = "https://api.stockdata.org/v1/data/quote?symbols=" + stockSymbol + "&api_token=NXXVNIOjQv1Jr7NEX1bWVzS45OHujgnZWNIvq27U";
+        
+        var newsURL = "https://api.marketaux.com/v1/news/all?symbols=" + stockSymbol + "&filter_entities=true&language=en&api_token=nlImfVRma9P5KANB90CtXrsSfaJOPg8quhKGBeqr";
+       
+    
+        // ------APIs calls 
+
+        $.ajax({
+          url: queryURL,
+          method: "GET"
+        }).then(function(response) {
+          $("#stock-view").text(JSON.stringify(response));
+        });
+
+        $.ajax({
+          url: newsURL,
+          method: "GET"
+        }).then(function(response) {
+          $("#news-view").text(JSON.stringify(response));
+        });
+        // -----------------------------------------------------------------------
+
+      });
+    </script>
+  </div>
+</body>
+
+</html>
